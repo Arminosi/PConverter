@@ -18,6 +18,7 @@ function App() {
   const [isClosingModal, setIsClosingModal] = useState(false);
   const [isResetConfirming, setIsResetConfirming] = useState(false);
   const [showExportMenu, setShowExportMenu] = useState(false);
+  const [isGithubConfirming, setIsGithubConfirming] = useState(false);
   
   // History for undo/redo
   const [editHistory, setEditHistory] = useState<EditState[]>([]);
@@ -454,6 +455,48 @@ function App() {
                       )}
                   </div>
               ))}
+            </div>
+            
+            {/* Author Info */}
+            <div className="shrink-0 border-t border-zinc-800 bg-zinc-900/50 p-3">
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex-1 min-w-0">
+                  <p className="text-[10px] text-zinc-500 mb-0.5">{t.author}</p>
+                  <p className="text-sm font-medium text-zinc-300 truncate">Arminosi</p>
+                </div>
+                <div className="relative">
+                  <button
+                    onClick={() => {
+                      if (isGithubConfirming) {
+                        window.open('https://github.com/Arminosi/PConverter', '_blank');
+                        setIsGithubConfirming(false);
+                      } else {
+                        setIsGithubConfirming(true);
+                        setTimeout(() => setIsGithubConfirming(false), 3000);
+                      }
+                    }}
+                    onMouseLeave={() => setIsGithubConfirming(false)}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all border ${
+                      isGithubConfirming
+                        ? 'bg-indigo-600 border-indigo-500 text-white shadow-lg shadow-indigo-500/20'
+                        : 'bg-zinc-800 border-zinc-700 hover:bg-zinc-700 text-zinc-300'
+                    }`}
+                  >
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                      <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
+                    </svg>
+                    <span>GitHub</span>
+                  </button>
+                  {isGithubConfirming && (
+                    <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-indigo-600 text-white text-[10px] px-2.5 py-1 rounded-md shadow-lg whitespace-nowrap font-medium animate-in fade-in slide-in-from-bottom-2 duration-200 z-50">
+                      <div className="relative">
+                        {t.githubConfirm}
+                        <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-indigo-600"></div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
         </div>
 

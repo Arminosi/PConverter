@@ -54,7 +54,10 @@ export const translations = {
     watermarkSpacingY: "Vertical",
     watermarkPreview: "Preview Watermark",
     enableWatermark: "Enable Watermark",
-    watermarkTextPlaceholder: "Enter watermark text..."
+    watermarkTextPlaceholder: "Enter watermark text...",
+    author: "Author",
+    viewOnGithub: "View on GitHub",
+    githubConfirm: "Click again to open GitHub"
   },
   zh: {
     title: "改图工匠",
@@ -109,7 +112,10 @@ export const translations = {
     watermarkSpacingY: "纵向间距",
     watermarkPreview: "预览水印",
     enableWatermark: "启用水印",
-    watermarkTextPlaceholder: "请输入水印文字..."
+    watermarkTextPlaceholder: "请输入水印文字...",
+    author: "作者",
+    viewOnGithub: "访问 GitHub",
+    githubConfirm: "再次点击访问 GitHub"
   }
 };
 
