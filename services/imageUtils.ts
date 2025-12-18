@@ -153,7 +153,59 @@ export const processImage = async (
     }
   }
 
-  // 6. Export with Compression
+  // 6. Apply Watermark if enabled
+  if (settings.watermark?.enabled && settings.watermark.text) {
+    const watermarkCanvas = document.createElement('canvas');
+    watermarkCanvas.width = finalCanvas.width;
+    watermarkCanvas.height = finalCanvas.height;
+    const wCtx = watermarkCanvas.getContext('2d');
+    
+    if (wCtx) {
+      // Draw the original image first
+      wCtx.drawImage(finalCanvas, 0, 0);
+      
+      // Calculate font size based on image dimensions
+      const baseFontSize = Math.max(Math.min(finalCanvas.width, finalCanvas.height) * 0.03, 16);
+      const fontSize = baseFontSize;
+      
+      // Auto-calculate spacing based on image size if not explicitly set
+      const autoSpacingX = settings.watermark.spacingX || Math.max(finalCanvas.width * 0.2, 200);
+      const autoSpacingY = settings.watermark.spacingY || Math.max(finalCanvas.height * 0.15, 150);
+      
+      // Setup watermark style
+      wCtx.font = `${fontSize}px Arial, sans-serif`;
+      wCtx.fillStyle = settings.watermark.color;
+      wCtx.globalAlpha = settings.watermark.opacity;
+      wCtx.textAlign = 'center';
+      wCtx.textBaseline = 'middle';
+      
+      // Calculate text dimensions for proper spacing
+      const textMetrics = wCtx.measureText(settings.watermark.text);
+      const textWidth = textMetrics.width;
+      const textHeight = fontSize;
+      
+      // Draw watermark pattern
+      const rows = Math.ceil(finalCanvas.height / autoSpacingY) + 2;
+      const cols = Math.ceil(finalCanvas.width / autoSpacingX) + 2;
+      
+      for (let row = -1; row < rows; row++) {
+        for (let col = -1; col < cols; col++) {
+          const x = col * autoSpacingX;
+          const y = row * autoSpacingY;
+          
+          wCtx.save();
+          wCtx.translate(x, y);
+          wCtx.rotate((settings.watermark.rotation * Math.PI) / 180);
+          wCtx.fillText(settings.watermark.text, 0, 0);
+          wCtx.restore();
+        }
+      }
+      
+      finalCanvas = watermarkCanvas;
+    }
+  }
+
+  // 7. Export with Compression
   if (settings.targetSizeMB && settings.targetSizeMB > 0) {
     const targetBytes = settings.targetSizeMB * 1024 * 1024;
     return compressToTargetSize(finalCanvas, settings.format, targetBytes);
