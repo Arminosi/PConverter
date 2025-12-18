@@ -31,6 +31,18 @@ export interface EditState {
   flipY: boolean;
   isCropping: boolean;
   cropRect: CropRect | null; // The crop rectangle relative to the *original* image dimensions
+  cropAspectLocked: boolean; // Lock crop aspect ratio
+}
+
+export interface WatermarkSettings {
+  enabled: boolean;
+  text: string;
+  color: string;
+  opacity: number; // 0-1
+  fontSize: number; // Will be auto-calculated based on image size
+  rotation: number; // degrees
+  spacingX: number; // horizontal spacing
+  spacingY: number; // vertical spacing
 }
 
 export interface ExportSettings {
@@ -40,6 +52,7 @@ export interface ExportSettings {
   targetWidth?: number;
   targetHeight?: number;
   maintainAspectRatio: boolean;
+  watermark: WatermarkSettings;
 }
 
 export interface ProcessedResult {
