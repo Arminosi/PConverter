@@ -1,0 +1,5 @@
+{
+  "name": "CollagePro Converter",
+  "description": "A professional-grade, client-side image converter and editor. Batch process, crop, resize, and extract frames from animations without server uploads.",
+  "requestFramePermissions": []
+}
