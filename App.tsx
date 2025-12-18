@@ -284,7 +284,7 @@ function App() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-[#09090b] text-zinc-100 font-sans selection:bg-indigo-500/30 overflow-hidden">
+    <div className="flex flex-col bg-[#09090b] text-zinc-100 font-sans selection:bg-indigo-500/30 overflow-hidden" style={{ height: 'calc(var(--vh, 1vh) * 100)' }}>
       
       {/* Top Bar */}
       <header className="h-14 bg-zinc-900 border-b border-zinc-800 flex items-center px-2 sm:px-4 justify-between shrink-0 z-40 relative">

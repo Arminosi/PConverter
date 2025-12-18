@@ -21,6 +21,11 @@
       ::-webkit-scrollbar-thumb:hover {
         background: #52525b; 
       }
+      /* Support for mobile browsers with address bars */
+      :root {
+        --vh: 1vh;
+      }
+      
       body {
         background-color: #09090b;
         color: #e4e4e7;
@@ -52,6 +57,22 @@
 </head>
   <body>
     <div id="root"></div>
+  <script>
+    // Fix for mobile browser address bar
+    function setVH() {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+    
+    // Set on load
+    setVH();
+    
+    // Update on resize and orientation change
+    window.addEventListener('resize', setVH);
+    window.addEventListener('orientationchange', () => {
+      setTimeout(setVH, 100);
+    });
+  </script>
   <script type="module" src="/index.tsx"></script>
 </body>
 </html>

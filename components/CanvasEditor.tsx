@@ -354,8 +354,9 @@ export const CanvasEditor: React.FC<CanvasEditorProps> = ({ image, editState, on
 
   // Calculate handle size compensation
   // We want handles to appear ~24px on screen regardless of image scale.
-  const safeScale = viewState.fitScale > 0.0001 ? viewState.fitScale : 1;
-  const invScale = 1 / safeScale;
+  // Must account for both fitScale and userScale
+  const totalScale = (viewState.fitScale > 0.0001 ? viewState.fitScale : 1) * viewState.userScale;
+  const invScale = 1 / totalScale;
   
   // Transform for handles: Scale UP to counter the container scale DOWN
   // Also handle flip correction so handles don't flip upside down visually
