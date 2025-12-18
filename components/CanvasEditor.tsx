@@ -49,7 +49,7 @@ export const CanvasEditor: React.FC<CanvasEditorProps> = ({ image, editState, on
         cropRect: { x: 0, y: 0, width: image.width, height: image.height }
       });
     }
-  }, [image.id, editState.cropRect]);
+  }, [image.id]);
 
   // Handle Resize & Fit Calculation
   useEffect(() => {
@@ -88,15 +88,17 @@ export const CanvasEditor: React.FC<CanvasEditorProps> = ({ image, editState, on
       }
     };
 
+    // Initial update with small delay to ensure DOM is ready
+    const immediateTimer = setTimeout(updateDimensions, 50);
     // Delay to allow sidebar animation to complete
-    const timer = setTimeout(updateDimensions, 320);
-    updateDimensions();
+    const delayedTimer = setTimeout(updateDimensions, 320);
     
     const observer = new ResizeObserver(updateDimensions);
     if (containerRef.current) observer.observe(containerRef.current);
     
     return () => {
-      clearTimeout(timer);
+      clearTimeout(immediateTimer);
+      clearTimeout(delayedTimer);
       observer.disconnect();
     };
   }, [image, editState.rotation, sidebarOpen]);
@@ -355,7 +357,9 @@ export const CanvasEditor: React.FC<CanvasEditorProps> = ({ image, editState, on
   // Calculate handle size compensation
   // We want handles to appear ~24px on screen regardless of image scale.
   // Must account for both fitScale and userScale
-  const totalScale = (viewState.fitScale > 0.0001 ? viewState.fitScale : 1) * viewState.userScale;
+  const safeFitScale = viewState.fitScale > 0.01 ? viewState.fitScale : 1;
+  const safeUserScale = viewState.userScale > 0.01 ? viewState.userScale : 1;
+  const totalScale = safeFitScale * safeUserScale;
   const invScale = 1 / totalScale;
   
   // Transform for handles: Scale UP to counter the container scale DOWN
