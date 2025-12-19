@@ -101,13 +101,15 @@ function App() {
 
   // Reset edit state when switching images
   useEffect(() => {
+    if (!activeImage) return;
+    
     const newState = {
       scale: 1,
       rotation: 0,
       flipX: false,
       flipY: false,
       isCropping: false,
-      cropRect: null,
+      cropRect: { x: 0, y: 0, width: activeImage.width, height: activeImage.height },
       cropAspectLocked: false
     };
     setEditState(newState);
@@ -119,7 +121,7 @@ function App() {
         targetHeight: undefined,
         targetSizeMB: undefined
     }));
-  }, [activeImageId]);
+  }, [activeImageId, activeImage?.width, activeImage?.height]);
 
   const removeImage = (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
