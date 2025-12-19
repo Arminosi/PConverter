@@ -40,17 +40,6 @@ export const CanvasEditor: React.FC<CanvasEditorProps> = ({ image, editState, on
   
   const [lastPinchDistance, setLastPinchDistance] = useState<number | null>(null);
 
-  // Initialize or reset crop when image changes
-  useEffect(() => {
-    if(!image) return;
-    if (!editState.cropRect) {
-      onEditChange({
-        ...editState,
-        cropRect: { x: 0, y: 0, width: image.width, height: image.height }
-      });
-    }
-  }, [image.id]);
-
   // Handle Resize & Fit Calculation
   useEffect(() => {
     const updateDimensions = () => {
